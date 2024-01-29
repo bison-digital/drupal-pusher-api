@@ -1,0 +1,8 @@
+api:
+  version: VERSION
+  js:
+    https://js.pusher.com/7.0/pusher.min.js: { type: external, minified: true }
+    js/pusher_api.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

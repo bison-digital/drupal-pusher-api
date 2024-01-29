@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autowire: true
+
+  pusher_api.config.factory:
+    class: Drupal\pusher_api\Factory\ConfigFactory

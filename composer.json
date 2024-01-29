@@ -1,0 +1,26 @@
+{
+    "name": "drupal/pusher_api",
+    "type": "drupal-module",
+    "description": "Integration between Drupal and pusher.com",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/pusher_api",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/pusher_api",
+        "source": "http://cgit.drupalcode.org/pusher_api"
+    },
+    "require": {
+        "pusher/pusher-php-server": "^7.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require-dev": {
+        "drupal/core": "11.x-dev"
+    }
+}

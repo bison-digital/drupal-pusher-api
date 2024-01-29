@@ -1,0 +1,40 @@
+<?php
+
+use Drupal\Core\Site\Settings;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function pusher_api_page_attachments(array &$attachments) {
+  /** @var \Drupal\pusher_api\Factory\ConfigFactory $configFactory */
+  $configFactory = \Drupal::service('pusher_api.config.factory');
+  $defaultConfig = $configFactory->create();
+
+  $attachments['#attached']['drupalSettings']['pusherApi'] = [
+    'appId' => $defaultConfig->appId,
+    'cluster' => $defaultConfig->options['cluser'],
+  ];
+  $attachments['#attached']['library'][] = 'pusher_api/api';
+}
+
+/**
+ * Implements hook_requirements().
+ */
+function pusher_api_requirements($phase) {
+  $requirements = [];
+
+  if ($phase == 'install') {
+    $settings = Settings::get('pusher_api');
+
+    if (empty($settings) || !is_array($settings) || !array_key_exists('default', $settings)) {
+      $requirements['pusher_api_settings'] = [
+        'title' => t('Pusher API Settings'),
+        'description' => t('Pusher API settings not found, please check the README.md for configuration information.'),
+        'severity' => REQUIREMENT_ERROR,
+      ];
+    }
+  }
+
+  return $requirements;
+}
+

@@ -1,0 +1,5 @@
+name: 'Pusher API'
+type: module
+description: 'Integration between Drupal and pusher.com'
+core_version_requirement: ^10
+package: 'Web services'
