@@ -1,9 +1,11 @@
 (function ($, Drupal, drupalSettings) {
     Drupal.behaviors.pusherApiBehavior = {
         attach: function (context, settings) {
-            window.pusherApiPusher = new Pusher(drupalSettings.pusherApi.key, {
-                cluster: drupalSettings.pusherApi.cluster
-            });
+            once('pusherInit', 'html').forEach(function (element) {
+                window.pusherApiPusher = new Pusher(drupalSettings.pusherApi.key, {
+                    cluster: drupalSettings.pusherApi.cluster
+                });
+            })
         }
     };
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal, drupalSettings, once);
