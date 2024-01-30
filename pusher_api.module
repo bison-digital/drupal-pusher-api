@@ -10,7 +10,7 @@ function pusher_api_page_attachments(array &$attachments) {
 
   $attachments['#attached']['drupalSettings']['pusherApi'] = [
     'appId' => $defaultConfig->appId,
-    'cluster' => $defaultConfig->options['cluser'],
+    'cluster' => $defaultConfig->options['cluster'],
   ];
   $attachments['#attached']['library'][] = 'pusher_api/api';
 }
