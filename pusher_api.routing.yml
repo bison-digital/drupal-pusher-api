@@ -1,0 +1,5 @@
+pusher_api.authentication:
+  path: '/admin/pusher-api/authentication'
+  defaults:
+    _controller: '\Drupal\pusher_api\Controller\AuthenticationController::login'
+    _title: 'Authenticate users with Pusher'
