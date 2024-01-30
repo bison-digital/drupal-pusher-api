@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 class AuthenticationController extends ControllerBase {
 
   public function __construct(
-    protected AccountInterface $currentUser,
     protected EventDispatcher $eventDispatcher,
     protected PusherService $pusherService,
   ) {
@@ -23,14 +22,13 @@ class AuthenticationController extends ControllerBase {
 
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('current_user'),
       $container->get('pusher_api.pusher.service.default'),
       $container->get('event.dispatcher'),
     );
   }
 
   public function login(Request $request): JsonResponse {
-    if ($this->currentUser->isAuthenticated() == FALSE) {
+    if ($this->currentUser()->isAuthenticated() == FALSE) {
       return new JsonResponse('Forbidden', 403);
     }
 
