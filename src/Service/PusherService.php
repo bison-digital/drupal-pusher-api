@@ -29,10 +29,10 @@ class PusherService {
     }
   }
 
-  public function authenticateUser(string $webSocketId, Data $data): JsonResponse {
+  public function authenticate(string $webSocketId, Data $data): JsonResponse {
     try {
       return new JsonResponse(
-        data: $this->pusher->authenticateUser($webSocketId, $data->data),
+        data: $this->pusher->socketAuth($data->data['channel_name'], $webSocketId),
         json: TRUE,
       );
     } catch (\Throwable $throwable) {

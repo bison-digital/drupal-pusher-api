@@ -29,24 +29,35 @@ class AuthenticationController extends ControllerBase {
     );
   }
 
-  public function login(Request $request): JsonResponse {
-    if ($this->currentUser()->isAuthenticated() == FALSE) {
-      return new JsonResponse('Forbidden', 403);
+  public function authenticate(Request $request): JsonResponse {
+    try {
+      if ($this->currentUser()->isAuthenticated() == FALSE) {
+        return new JsonResponse('Forbidden', 403);
+      }
+
+      if (empty($request->request->get('socket_id'))) {
+        return new JsonResponse(['error' => 'Socket ID not found.'], 400);
+      }
+
+      $data = new Data(
+        [
+          'id' => (string) $this->currentUser->id(),
+          'channel_name' => $request->request->get('channel_name')
+        ]
+      );
+
+      $event = $this->eventDispatcher->dispatch(new AuthenticationEvent($data));
+
+      $data = $event->getData();
+
+      return $this->pusherService->authenticate(
+        $request->request->get('socket_id'),
+        $data,
+      );
+    } catch (\Throwable $throwable) {
+      $this->getLogger('pusher_api.controller.login')->error($throwable->getMessage());
+
+      return new JsonResponse(['Something went wrong...']);
     }
-
-    if (empty($request->request->get('socket_id'))) {
-      return new JsonResponse(['error' => 'Socket ID not found.'], 400);
-    }
-
-    $data = new Data(['id' => (string) $this->currentUser->id()]);
-
-    $event = $this->eventDispatcher->dispatch(new AuthenticationEvent($data));
-
-    $data = $event->getData();
-
-    return $this->pusherService->authenticateUser(
-      $request->request->get('socket_id'),
-      $data,
-    );
   }
 }
