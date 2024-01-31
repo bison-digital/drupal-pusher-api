@@ -4,3 +4,15 @@ services:
 
   pusher_api.config.factory:
     class: Drupal\pusher_api\Factory\ConfigFactory
+    arguments:
+      - '@settings'
+
+  pusher_api.pusher.factory:
+    class: Drupal\pusher_api\Factory\PusherFactory
+
+  pusher_api.pusher_service.factory:
+    class: Drupal\pusher_api\Factory\PusherServiceFactory
+    arguments:
+      - '@pusher_api.config.factory'
+      - '@pusher_api.pusher.factory'
+      - '@logger.factory'

@@ -34,6 +34,7 @@ class ConfigFactory {
     }
 
     return new Config(
+      $key,
       $channelSettings['app_id'],
       $channelSettings['key'],
       $channelSettings['secret'],

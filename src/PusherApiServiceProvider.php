@@ -6,32 +6,22 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\pusher_api\Factory\PusherFactory;
 use Drupal\pusher_api\Service\PusherService;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class PusherApiServiceProvider extends ServiceProviderBase {
 
   public function register(ContainerBuilder $container): void {
     try {
-      /** @var \Drupal\Core\Logger\LoggerChannelFactory $loggerChannelFactory */
-      $loggerChannelFactory = $container->get('logger.channel.factory');
       /** @var \Drupal\pusher_api\Factory\ConfigFactory $configFactory */
       $configFactory = $container->get('pusher_api.config.factory');
-      $pusherFactory = new PusherFactory();
-
       foreach ($configFactory->keys() as $key) {
         try {
-          $config = $configFactory->create($key);
-          $pusherServiceId = 'pusher_api.pusher.service.' . $config->appId;
-          $loggerChannel = $loggerChannelFactory->get($pusherServiceId);
-
-          $pusher = $pusherFactory->create($config);
-          $pusher->setLogger($loggerChannel);
-
-          $container
-            ->register($pusherServiceId, PusherService::class)
-            ->addArgument($pusher)
-            ->addArgument($loggerChannel);
+          $container->register('pusher_api.pusher.service.' . $key, PusherService::class)
+            ->setFactory([new Reference('pusher_api.pusher_service.factory'), 'create'])
+            ->addArgument($key);
         } catch (\Exception $exception) {
-          //@todo: Log service specific message.
+          //@todo: Log any pusher app specific exceptions.
         }
       }
 

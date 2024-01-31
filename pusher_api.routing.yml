@@ -3,3 +3,5 @@ pusher_api.authentication:
   defaults:
     _controller: '\Drupal\pusher_api\Controller\AuthenticationController::login'
     _title: 'Authenticate users with Pusher'
+  requirements:
+    _access: 'TRUE'

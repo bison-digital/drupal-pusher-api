@@ -2,7 +2,7 @@
 
 namespace Drupal\pusher_api\Service;
 
-use Drupal\Core\Logger\LoggerChannel;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\pusher_api\DTO\Channels;
 use Drupal\pusher_api\DTO\Data;
 use Drupal\pusher_api\DTO\Event;
@@ -13,7 +13,7 @@ class PusherService {
 
   public function __construct(
     protected Pusher $pusher,
-    protected LoggerChannel $loggerChannel,
+    protected LoggerChannelInterface $loggerChannel,
   ) {
   }
 
@@ -37,9 +37,9 @@ class PusherService {
       );
     } catch (\Throwable $throwable) {
       $this->loggerChannel->error('pusher_api: ' . $throwable->getMessage());
-    }
 
-    return new JsonResponse('Something went wrong...', 500);
+      return new JsonResponse('Something went wrong...', 500);
+    }
   }
 
 }
