@@ -4,8 +4,11 @@ namespace Drupal\pusher_api\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\pusher_api\DTO\Channels;
 use Drupal\pusher_api\DTO\Data;
+use Drupal\pusher_api\DTO\Event;
 use Drupal\pusher_api\Event\AuthenticationEvent;
+use Drupal\pusher_api\Event\TriggerEvent;
 use Drupal\pusher_api\Service\PusherService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -42,7 +45,7 @@ class AuthenticationController extends ControllerBase {
       $data = new Data(
         [
           'id' => (string) $this->currentUser->id(),
-          'channel_name' => $request->request->get('channel_name')
+          'channel_name' => $request->request->get('channel_name'),
         ]
       );
 
@@ -59,5 +62,17 @@ class AuthenticationController extends ControllerBase {
 
       return new JsonResponse(['Something went wrong...']);
     }
+  }
+
+  public function test() {
+    $this->eventDispatcher->dispatch(
+      new TriggerEvent(
+        new Channels(['private-user-1', 'public-user']),
+        new Event('my-event'),
+        new Data(['xcvb']),
+      )
+    );
+
+    return new JsonResponse(['OK']);
   }
 }

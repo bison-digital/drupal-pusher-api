@@ -16,3 +16,10 @@ services:
       - '@pusher_api.config.factory'
       - '@pusher_api.pusher.factory'
       - '@logger.factory'
+
+  pusher_api.trigger.event.subscriber:
+    class: Drupal\pusher_api\EventSubscriber\TriggerEventSubscriber
+    arguments:
+      - '@pusher_api.pusher.service.default'
+    tags:
+      - { name: event_subscriber }

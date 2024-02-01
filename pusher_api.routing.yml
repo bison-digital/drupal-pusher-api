@@ -5,3 +5,11 @@ pusher_api.authentication:
     _title: 'Authenticate sockets with Pusher'
   requirements:
     _access: 'TRUE'
+
+pusher_api.test:
+  path: '/admin/pusher-api/test'
+  defaults:
+    _controller: '\Drupal\pusher_api\Controller\AuthenticationController::test'
+    _title: 'Test pusher (remove)'
+  requirements:
+    _access: 'TRUE'
